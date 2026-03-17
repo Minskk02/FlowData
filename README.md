@@ -17,6 +17,9 @@ Full exploratory data analysis workflow:
 - **Pearson correlation heatmap** across all features
 - Regression scatter plots for every feature vs. Exit Velocity
 
+![Correlation Matrix Heatmap](engine_heatmap.png)
+![Regression Scatter Plots](corr.png)
+
 ---
 
 ### `Adding_Noise.py` — Data Augmentation, Encoding & Imbalance Handling
@@ -27,13 +30,16 @@ End-to-end pre-processing and augmentation pipeline before model training:
 | Step | Description |
 |------|-------------|
 | **Velocity derivation** | Computes velocity from Mach and static temperature: `V = Mach × √(γRT)` |
-| **Gaussian noise injection** | Adds Normal(0, σ=5) noise to velocity to simulate sensor variance |
+| **Gaussian noise injection** | Adds Normal(0, σ=5) noise to velocity to simulate sensor variance — original (blue) vs noisy (red) shown below |
 | **Bootstrapping × 1000** | Resamples with replacement 1000 times; plots bootstrapped mean distribution to quantify sampling uncertainty |
 | **Flow type classification** | Labels each point Subsonic (<0.8), Transonic (0.8–1.1), or Supersonic (>1.1) Mach |
 | **One-Hot Encoding** | Encodes categorical `Flow_Type` for use in regression |
 | **Random Forest + 3-fold CV** | Trains `RandomForestRegressor`, reports MSE/RMSE per fold |
 | **Random Under-Sampling** | Balances class counts so the model isn't biased toward the dominant flow regime |
 | **Train/Test Split** | Partitions data 67/33 for final model evaluation |
+
+![Velocity Before and After Noise](noise_introduced.png)
+![Bootstrap Distribution of Mean Velocity](Mean_velo_bootstrapped.png)
 
 ---
 
@@ -43,6 +49,8 @@ End-to-end pre-processing and augmentation pipeline before model training:
 - **StandardScaler** normalises the four continuous features
 - **t-SNE** (perplexity = 2) reduces to 2-D — laminar points cluster tightly, turbulent points spread widely, consistent with their physical behaviour
 - **KMeans** (k = 4) clusters the data and appends labels for inspection
+
+![t-SNE: Laminar vs Turbulent](tSNE.png)
 
 ---
 
